@@ -24,10 +24,6 @@ public class Main {
         System.out.println("Deseja jogar? Pressione [Enter] ou digite \"Sair\" para finalizar.");
         response = scanner.nextLine();
 
-        if (response.equals("Sair")) {
-            System.exit(0);
-        }
-
         while (!response.equals("Sair")) {
             clearConsole();
             displayBoard(board);
@@ -37,41 +33,57 @@ public class Main {
             System.out.println("Digite o número da posição onde deseja jogar.");
             response = scanner.nextLine();
 
+            if (response.equals("Sair")) {
+                break;
+            }
+
+            if (!isInteger(response)) {
+                continue;
+            }
+
             int responseNumber = Integer.parseInt(response);
-            if (responseNumber >= 1 && responseNumber <= 9) {
-                if (board[responseNumber - 1] == 'X' || board[responseNumber - 1] == 'O') {
+
+            if (responseNumber < 1 || responseNumber > 9) {
+                continue;
+            }
+
+            if (board[responseNumber - 1] == 'X' || board[responseNumber - 1] == 'O') {
+                clearConsole();
+                System.out.println("Jogada inválida...");
+                System.out.println("Tente novamente!");
+                delay(3, 750);
+                continue;
+            }
+            else {
+                board = makeMove(board, responseNumber, player);
+                String result = checkIfItsOver(board);
+                if (!result.equals("")) {
                     clearConsole();
-                    System.out.println("Jogada inválida...");
-                    System.out.println("Tente novamente!");
-                    delay(3, 750);
-                    continue;
+                    displayBoard(board);
+
+                    System.out.println();
+                    if (result.equals("Draw")) System.out.println("Empate!");
+                    else System.out.println("Vencedor: " + result);
+
+                    break;
                 }
-                else {
-                    board = makeMove(board, responseNumber, player);
-                    String result = checkIfItsOver(board);
-                    if (!result.equals("")) {
-                        clearConsole();
-                        displayBoard(board);
 
-                        System.out.println("Vencedor: " + result);
-                        break;
-                    }
+                clearConsole();
+                System.out.println("É a vez do computador...");
+                delay(3, 700);
 
+                int move = calculateMove(board, player);
+                board = makeMove(board, move + 1, computer);
+                result = checkIfItsOver(board);
+                if (!result.equals("")) {
                     clearConsole();
-                    System.out.println("É a vez do computador...");
-                    delay(3, 700);
+                    displayBoard(board);
 
-                    int move = calculateMove(board, player);
-                    board = makeMove(board, move + 1, computer);
-                    result = checkIfItsOver(board);
-                    if (!result.equals("")) {
-                        clearConsole();
-                        displayBoard(board);
+                    System.out.println();
+                    if (result.equals("Draw")) System.out.println("Empate!");
+                    else System.out.println("Vencedor: " + result);
 
-                        System.out.println("Vencedor: " + result);
-                        break;
-                    }
-
+                    break;
                 }
             }
         }
@@ -116,6 +128,12 @@ public class Main {
 
         if (board[2] == board[4] && board[2] == board[6]) {
             return String.valueOf(board[2]);
+        }
+
+        if (board[0] != '1' && board[1] != '2' && board[2] != '3' &&
+            board[3] != '4' && board[4] != '5' && board[5] != '6' &&
+            board[6] != '7' && board[7] != '8' && board[8] != '9') {
+            return "Draw";
         }
 
         return "";
@@ -225,6 +243,30 @@ public class Main {
             System.out.println(i + "...");
             TimeUnit.MILLISECONDS.sleep(time);
         }
+    }
+
+    public static boolean isInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        int length = str.length();
+        if (length == 0) {
+            return false;
+        }
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (length == 1) {
+                return false;
+            }
+            i = 1;
+        }
+        for (; i < length; i++) {
+            char c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
