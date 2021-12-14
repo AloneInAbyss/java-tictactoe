@@ -152,6 +152,50 @@ public class Main {
         }
 
         for (int i = 0; i < 9; i += 3) {
+            if (board[i] == computerSymbol && board[1 + i] == computerSymbol && board[2 + i] != playerSymbol) {
+                return 2 + i;
+            }
+            if (board[i] == computerSymbol && board[2 + i] == computerSymbol && board[1 + i] != playerSymbol) {
+                return 1 + i;
+            }
+            if (board[1 + i] == computerSymbol && board[2 + i] == computerSymbol && board[i] != playerSymbol) {
+                return i;
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            if (board[i] == computerSymbol && board[3 + i] == computerSymbol && board[6 + i] != playerSymbol) {
+                return 6 + i;
+            }
+            if (board[i] == computerSymbol && board[6 + i] == computerSymbol && board[3 + i] != playerSymbol) {
+                return 3 + i;
+            }
+            if (board[3 + i] == computerSymbol && board[6 + i] == computerSymbol && board[i] != playerSymbol) {
+                return i;
+            }
+        }
+
+        if (board[0] == computerSymbol && board[4] == computerSymbol && board[8] != playerSymbol) {
+            return 8;
+        }
+        if (board[0] == computerSymbol && board[8] == computerSymbol && board[4] != playerSymbol) {
+            return 4;
+        }
+        if (board[4] == computerSymbol && board[8] == computerSymbol && board[0] != playerSymbol) {
+            return 0;
+        }
+
+        if (board[2] == computerSymbol && board[4] == computerSymbol && board[6] != playerSymbol) {
+            return 6;
+        }
+        if (board[2] == computerSymbol && board[6] == computerSymbol && board[4] != playerSymbol) {
+            return 4;
+        }
+        if (board[4] == computerSymbol && board[6] == computerSymbol && board[2] != playerSymbol) {
+            return 2;
+        }
+
+        for (int i = 0; i < 9; i += 3) {
             if (board[i] == playerSymbol && board[1 + i] == playerSymbol && board[2 + i] != computerSymbol) {
                 return 2 + i;
             }
